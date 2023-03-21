@@ -53,8 +53,8 @@ class productManager {
 }
 
 const ProductManager = new productManager();
-let products = ProductManager.addProducts('Monopatin', 'rapido', '1400', 'asdasd', '43245', '50')
-console.log(products);
+ProductManager.addProducts('Monopatin', 'rapido', '1400', 'asdasd', '43245', '50')
+ProductManager.addProducts('MonopatinXL', 'duradero', '1000', 'aassdasd', '4334dsd', '30')
 
-let llamarPorId = ProductManager.getProductById(3)
-console.log(llamarPorId)
+
+console.log(ProductManager.getProductById(1))
