@@ -1,7 +1,6 @@
 import fs from 'fs';
 
 export class ProductManager {
-    // El constructor toma una ruta de archivo como argumento
     constructor(path) {
         this.path = path;
     }
@@ -18,20 +17,25 @@ export class ProductManager {
         return newProduct;
     };
 
-    async getProducts() {
+    async getProducts(limit) {
         // Se lee el archivo JSON y se convierte en un objeto
         try {
             const data = await fs.promises.readFile(this.path, 'utf-8');
-            return data ? JSON.parse(data) : [];
+            const products = JSON.parse(data)
+            if (limit > 0) {
+                const productsLimit = products.slice(0, limit)
+                return productsLimit
+            } else {
+                return products
+            }
         } catch {
             return [];
         }
     };
 
-
     async getProductById(id) {
-        const products = await this.getProducts();
-        return products.find((product) => product.id === id);
+        const products = await this.getProducts(0);
+        return products.find((product) => product.id == id);
     };
 
     async updateProduct(id, updatedProduct) {
