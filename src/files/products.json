@@ -18,5 +18,15 @@
 		"status": true,
 		"category": "monopatin",
 		"id": 2
+	},
+	{
+		"title": "moto",
+		"description": "velocidad maxima 150km",
+		"price": "3500",
+		"code": 2122,
+		"stock": 40,
+		"status": true,
+		"category": "Motocicleta",
+		"id": 3
 	}
 ]

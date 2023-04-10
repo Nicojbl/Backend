@@ -2,17 +2,17 @@ import { ProductManager } from "../manager/ProductManager.js";
 import { Router } from "express";
 
 const router = Router()
-const manager = new ProductManager('./src/files/products.json')
+const managerProduct = new ProductManager('./src/files/products.json')
 
 router.get('/', async (req, res) => {
     const limit = req.query.limit
-    const products = await manager.getProducts(limit)
+    const products = await managerProduct.getProducts(limit)
     res.send(products)
 })
 
 router.get('/:pid', async (req, res) => {
     const pid = req.params.pid
-    const productId = await manager.getProductById(pid)
+    const productId = await managerProduct.getProductById(pid)
     res.send(productId)
 })
 
@@ -29,7 +29,7 @@ router.post('/', async (req, res) => {
         category,
     }
 
-    const newProduct = await manager.addProduct(product)
+    const newProduct = await managerProduct.addProduct(product)
     res.send(newProduct)
 })
 
@@ -47,13 +47,13 @@ router.put('/:pid', async (req, res) => {
         category,
     }
 
-    const upProduct = await manager.updateProduct(pid, updateProduct)
+    const upProduct = await managerProduct.updateProduct(pid, updateProduct)
     res.send(upProduct)
 })
 
 router.delete('/:pid', async (req, res) => {
     const pid = req.params.pid
-    const delProduct = await manager.deleteProduct(pid)
+    const delProduct = await managerProduct.deleteProduct(pid)
     res.send(delProduct)
 })
 
