@@ -35,12 +35,12 @@ export class ProductManager {
 
     async getProductById(id) {
         const products = await this.getProducts(0);
-        return products.find((product) => product.id == id);
+        return products.find((product) => product.id === parseInt(id));
     };
 
     async updateProduct(id, updatedProduct) {
-        const products = await this.getProducts();
-        const index = products.findIndex((product) => product.id === id);
+        const products = await this.getProducts(0);
+        const index = products.findIndex((product) => product.id === parseInt(id));
         /** Si se encuentra el índice, se actualiza el producto correspondiente
         y se escribe la lista actualizada en el archivo JSON **/
         if (index !== -1) {
@@ -54,8 +54,8 @@ export class ProductManager {
     };
 
     async deleteProduct(id) {
-        const products = await this.getProducts();
-        const index = products.findIndex((product) => product.id === id);
+        const products = await this.getProducts(0);
+        const index = products.findIndex((product) => product.id === parseInt(id));
         /** Si se encuentra el índice, se elimina el producto correspondiente
         y se escribe la lista actualizada en el archivo JSON **/
         if (index !== -1) {
@@ -73,7 +73,7 @@ export class ProductManager {
         const lastProduct = products[products.length - 1];
         // Si el último producto existe, se devuelve el ID del siguiente producto disponible.
         // De lo contrario, se devuelve 1 como el ID del primer producto.
-        return lastProduct ? lastProduct.id + 1 : 1;
+        return lastProduct ? parseInt(lastProduct.id) + 1 : 1;
     };
 }
 

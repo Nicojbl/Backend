@@ -1,65 +1,22 @@
 [
 	{
-		"Title": "Monopatin 3444",
-		"description": "duradero",
+		"title": "monopatin 11",
+		"description": "velocidad maxima 30km",
 		"price": "1000",
-		"thumbnail": "skjdhfasdj",
-		"code": "asd1223",
-		"stock": "44",
+		"code": 4453,
+		"stock": 10,
+		"status": true,
+		"category": "monopatin",
 		"id": 1
 	},
 	{
-		"Title": "Monopatin 3444",
+		"title": "monopatin",
 		"description": "duradero",
-		"price": "1000",
-		"thumbnail": "skjdhfasdj",
-		"code": "asd1223",
-		"stock": "44",
+		"price": "1500",
+		"code": 2322,
+		"stock": 20,
+		"status": true,
+		"category": "monopatin",
 		"id": 2
-	},
-	{
-		"Title": "Monopatin 3444",
-		"description": "duradero",
-		"price": "1000",
-		"thumbnail": "skjdhfasdj",
-		"code": "asd1223",
-		"stock": "44",
-		"id": 3
-	},
-	{
-		"Title": "Monopatin 3444",
-		"description": "duradero",
-		"price": "1000",
-		"thumbnail": "skjdhfasdj",
-		"code": "asd1223",
-		"stock": "44",
-		"id": 4
-	},
-	{
-		"Title": "Monopatin 3444",
-		"description": "duradero",
-		"price": "1000",
-		"thumbnail": "skjdhfasdj",
-		"code": "asd1223",
-		"stock": "44",
-		"id": 5
-	},
-	{
-		"Title": "Monopatin 3444",
-		"description": "duradero",
-		"price": "1000",
-		"thumbnail": "skjdhfasdj",
-		"code": "asd1223",
-		"stock": "44",
-		"id": 6
-	},
-	{
-		"Title": "Monopatin 3444",
-		"description": "duradero",
-		"price": "1000",
-		"thumbnail": "skjdhfasdj",
-		"code": "asd1223",
-		"stock": "44",
-		"id": 7
 	}
 ]
