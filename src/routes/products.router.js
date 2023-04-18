@@ -7,7 +7,7 @@ const managerProduct = new ProductManager('./src/files/products.json')
 router.get('/', async (req, res) => {
     const limit = req.query.limit
     const products = await managerProduct.getProducts(limit)
-    res.send(products)
+    res.render('home', { products: products })
 })
 
 router.get('/:pid', async (req, res) => {
