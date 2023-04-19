@@ -7,7 +7,7 @@ export class ProductManager {
 
     async addProduct(product) {
         // Se llama al método "getProducts" para obtener la lista actual de productos
-        const products = await this.getProducts();
+        const products = await this.getProducts(0);
         // Se agrega un nuevo producto a la lista y se le asigna un nuevo id
         const newProduct = { ...product, id: this.getNextId(products) };
         products.push(newProduct);

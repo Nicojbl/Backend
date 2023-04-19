@@ -1,10 +1,39 @@
-<div>
-    <h1>Productos</h1>
-    <ul>
-        {{#each products}}
-            <li>{{this.title}} - {{this.price}}</li>
-        {{/each}}
-    </ul>
+<div id="products">
+    <h1>Lista de productos</h1>
 </div>
+
+<form>
+    <input placeholder="title" id="title">
+    <br>
+    <br>
+    <input placeholder="description" id="description">
+    <br>
+    <br>
+    <input placeholder="price" id="price">
+    <br>
+    <br>
+    <input placeholder="code" id="code">
+    <br>
+    <br>
+    <input placeholder="stock" id="stock">
+    <br>
+    <br>
+    <input placeholder="category" id="category">
+    <br>
+    <br>
+</form>
+
+<button id="addProduct">Agregar producto</button>
+<br>
+<br>
+
+<form>
+    <input id="id" placeholder="id">
+    <br>
+    <br>
+</form>
+
+<button id="delProduct">Eliminar producto</button>
+
 <script src="/socket.io/socket.io.js"></script>
-<script src="/js/home.js"></script>
+<script src="/js/realTimeProducts.js"></script>

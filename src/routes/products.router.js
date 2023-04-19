@@ -10,6 +10,10 @@ router.get('/', async (req, res) => {
     res.render('home', { products: products })
 })
 
+router.get('/realTimeProducts', async (req, res) => {
+    res.render('realTimeProducts')
+})
+
 router.get('/:pid', async (req, res) => {
     const pid = req.params.pid
     const productId = await managerProduct.getProductById(pid)

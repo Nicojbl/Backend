@@ -2,9 +2,11 @@
     <h1>Productos</h1>
     <ul>
         {{#each products}}
-            <li>{{this.title}} - {{this.price}}</li>
+            <li>Title: {{this.title}}</li>
+            <li>Description: {{this.description}}</li>
+            <li>Price: {{this.price}}</li>
+            <li>stock: {{this.stock}}</li>
+            <br>
         {{/each}}
     </ul>
 </div>
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/home.js"></script>
