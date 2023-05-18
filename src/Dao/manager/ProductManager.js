@@ -35,6 +35,14 @@ class ProductManager {
   async getProductByID(pid) {
     const product = await productModel.findById(pid).lean();
 
+    if (!product) {
+      return {
+        code: 400,
+        status: "Error",
+        message: "No se ha encontrado un product con ese ID",
+      };
+    }
+
     return product;
   }
 
