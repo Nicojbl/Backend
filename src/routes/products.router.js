@@ -8,22 +8,14 @@ const productManager = new ProductManager();
 router.get("/", async (req, res) => {
   const { limit, page, sort, query } = req.query;
 
-  const {
-    docs,
-    hasPrevPage,
-    hasNextPage,
-    nextPage,
-    prevPage,
-    Totalpages,
-    status,
-  } = await productModel.paginate(
-    { category: query },
-    { limit: limit, page: page, sort: { price: sort }, lean: true }
-  );
+  const { docs, hasPrevPage, hasNextPage, nextPage, prevPage, Totalpages } =
+    await productModel.paginate(
+      { category: query },
+      { limit: limit, page: page, sort: { price: sort }, lean: true }
+    );
   const products = docs;
 
-  res.render("home", {
-    status,
+  res.render("products", {
     products,
     Totalpages,
     hasPrevPage,
@@ -39,12 +31,9 @@ router.get("/", async (req, res) => {
 router.get("/:pid", async (req, res) => {
   const pid = req.params.pid;
 
-  const result = await productManager.getProductByID(pid);
+  const prod = await productManager.getProductByID(pid);
 
-  res.status(result.code).send({
-    status: result.status,
-    message: result.message,
-  });
+  res.render("prod", { prod });
 });
 
 router.post("/", async (req, res) => {
@@ -52,10 +41,7 @@ router.post("/", async (req, res) => {
 
   const result = await productManager.addProduct(product);
 
-  res.status(result.code).send({
-    status: result.status,
-    message: result.message,
-  });
+  res.send(result);
 });
 
 router.put("/:pid", async (req, res) => {
@@ -63,20 +49,15 @@ router.put("/:pid", async (req, res) => {
   const product = req.body;
   const result = await productManager.updateProduct(id, product);
 
-  res.status(result.code).send({
-    status: result.status,
-    message: result.message,
-  });
+  res.send(result);
 });
 
 router.delete("/:pid", async (req, res) => {
   const id = req.params.pid;
 
   const result = await productManager.deleteProduct(id);
-  res.status(result.code).send({
-    status: result.status,
-    message: result.message,
-  });
+
+  res.send(result);
 });
 
 export default router;

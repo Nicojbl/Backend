@@ -29,47 +29,13 @@ class ProductManager {
   async getProducts() {
     const products = await productModel.find();
 
-    return {
-      code: 202,
-      status: "Success",
-      message: products,
-    };
+    return products;
   }
 
   async getProductByID(pid) {
-    const product = await productModel.findOne({ _id: pid });
+    const product = await productModel.findById(pid).lean();
 
-    if (!product) {
-      return {
-        code: 400,
-        status: "Error",
-        message: "No se ha encontrado un product con ese ID",
-      };
-    }
-
-    return {
-      code: 202,
-      status: "Success",
-      message: product,
-    };
-  }
-
-  async updateProduct(pid, _product) {
-    const products = await productModel.findOne({ _id: pid });
-
-    products.title = _product.title;
-    products.description = _product.description;
-    products.price = _product.price;
-    products.stock = _product.stock;
-    products.category = _product.category;
-
-    await productModel.updateMany({ _id: pid }, { $set: products });
-
-    return {
-      code: 202,
-      status: "Success",
-      message: `El producto con ID ${pid} ha sido actualizado exitosamente`,
-    };
+    return product;
   }
 
   async deleteProduct(pid) {
@@ -83,11 +49,7 @@ class ProductManager {
       };
     }
 
-    return {
-      code: 202,
-      status: "Success",
-      message: product,
-    };
+    return product;
   }
 }
 

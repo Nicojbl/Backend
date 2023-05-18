@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 
-const ProductCollection = "Products";
+const ProductCollection = "products";
 
 const ProductSchema = new mongoose.Schema({
   title: String,
