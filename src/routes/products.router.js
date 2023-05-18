@@ -1,64 +1,82 @@
-import { ProductManager } from "../manager/ProductManager.js";
 import { Router } from "express";
+import ProductManager from "../Dao/manager/ProductManager.js";
+import productModel from "../Dao/Models/products.js";
 
-const router = Router()
-const managerProduct = new ProductManager('./src/files/products.json')
+const router = Router();
+const productManager = new ProductManager();
 
-router.get('/', async (req, res) => {
-    const limit = req.query.limit
-    const products = await managerProduct.getProducts(limit)
-    res.render('home', { products: products })
-})
+router.get("/", async (req, res) => {
+  const { limit, page, sort, query } = req.query;
 
-router.get('/realTimeProducts', async (req, res) => {
-    res.render('realTimeProducts')
-})
+  const {
+    docs,
+    hasPrevPage,
+    hasNextPage,
+    nextPage,
+    prevPage,
+    Totalpages,
+    status,
+  } = await productModel.paginate(
+    { category: query },
+    { limit: limit, page: page, sort: { price: sort }, lean: true }
+  );
+  const products = docs;
 
-router.get('/:pid', async (req, res) => {
-    const pid = req.params.pid
-    const productId = await managerProduct.getProductById(pid)
-    res.send(productId)
-})
+  res.render("home", {
+    status,
+    products,
+    Totalpages,
+    hasPrevPage,
+    hasNextPage,
+    prevPage,
+    nextPage,
+    limit,
+    sort,
+    query,
+  });
+});
 
-router.post('/', async (req, res) => {
-    const { title, description, price, code, stock, category } = req.body
+router.get("/:pid", async (req, res) => {
+  const pid = req.params.pid;
 
-    let product = {
-        title,
-        description,
-        price,
-        code,
-        stock,
-        status: true,
-        category,
-    }
+  const result = await productManager.getProductByID(pid);
 
-    const newProduct = await managerProduct.addProduct(product)
-    res.send(newProduct)
-})
+  res.status(result.code).send({
+    status: result.status,
+    message: result.message,
+  });
+});
 
-router.put('/:pid', async (req, res) => {
-    const { title, description, price, code, stock, category } = req.body
-    const pid = parseInt(req.params.pid)
+router.post("/", async (req, res) => {
+  const product = req.body;
 
-    let updateProduct = {
-        title,
-        description,
-        price,
-        code,
-        stock,
-        status: true,
-        category,
-    }
+  const result = await productManager.addProduct(product);
 
-    const upProduct = await managerProduct.updateProduct(pid, updateProduct)
-    res.send(upProduct)
-})
+  res.status(result.code).send({
+    status: result.status,
+    message: result.message,
+  });
+});
 
-router.delete('/:pid', async (req, res) => {
-    const pid = req.params.pid
-    const delProduct = await managerProduct.deleteProduct(pid)
-    res.send(delProduct)
-})
+router.put("/:pid", async (req, res) => {
+  const id = req.params.pid;
+  const product = req.body;
+  const result = await productManager.updateProduct(id, product);
+
+  res.status(result.code).send({
+    status: result.status,
+    message: result.message,
+  });
+});
+
+router.delete("/:pid", async (req, res) => {
+  const id = req.params.pid;
+
+  const result = await productManager.deleteProduct(id);
+  res.status(result.code).send({
+    status: result.status,
+    message: result.message,
+  });
+});
 
 export default router;

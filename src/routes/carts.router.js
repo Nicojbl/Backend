@@ -1,33 +1,58 @@
-import { CartManager } from "../manager/CartManager.js";
 import { Router } from "express";
+import CartManager from "../Dao/manager/CartManager.js";
 
-const router = Router()
-const managerCart = new CartManager('./src/files/carts.json')
+const router = Router();
+const cartManager = new CartManager();
 
-router.post('/', async (req, res) => {
-    const newCart = {
-        products: []
-    };
+router.get("/", async (req, res) => {
+  const respuesta = await cartManager.getCarts();
 
-    const cart = await managerCart.addCart(newCart);
-    res.send(cart);
+  res.status(respuesta.code).send({
+    status: respuesta.status,
+    message: respuesta.message,
+  });
 });
 
-router.post('/:cid/product/:pid', async (req, res) => {
-    const cartId = req.params.cid;
-    const productId = req.params.pid;
-    const quantity = req.body.quantity || 1;
+router.get("/:cid", async (req, res) => {
+  const cid = req.params.cid;
 
-    const cart = await managerCart.addProductToCart(cartId, productId, quantity);
-    res.send(cart.products);
+  const respuesta = await cartManager.getCart(cid);
+
+  res.status(respuesta.code).send({
+    status: respuesta.status,
+    message: respuesta.message,
+  });
 });
 
-router.get('/:cid', async (req, res) => {
-    const cartId = req.params.cid;
-
-    const cart = await managerCart.getCartById(cartId);
-    res.send(cart.products);
+router.post("/", async (req, res) => {
+  const respuesta = await cartManager.createCart();
+  res.status(respuesta.code).send({
+    status: respuesta.status,
+    message: respuesta.message,
+  });
 });
 
+router.post("/:cid/product/:pid", async (req, res) => {
+  const cid = req.params.cid;
+  const pid = req.params.pid;
+
+  const respuesta = await cartManager.updateCart(cid, pid);
+
+  res.status(respuesta.code).send({
+    status: respuesta.status,
+    message: respuesta.message,
+  });
+});
+
+router.delete("/:cid", async (req, res) => {
+  const cid = req.params.cid;
+
+  const respuesta = await cartManager.deleteCart(cid);
+
+  res.status(respuesta.code).send({
+    status: respuesta.status,
+    message: respuesta.message,
+  });
+});
 
 export default router;

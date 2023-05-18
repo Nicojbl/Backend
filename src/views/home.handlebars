@@ -9,4 +9,10 @@
             <br>
         {{/each}}
     </ul>
+    {{#if hasPrevPage}}
+    <a href="/api/products?limit={{limit}}&page={{prevPage}}&sort={{sort}}&query={{query}}"><button>Anterior</button></a>
+    {{/if}}
+    {{#if hasNextPage}}
+    <a href="/api/products?limit={{limit}}&page={{nextPage}}&sort={{sort}}&query={{query}}"><button>Siguiente</button></a>
+    {{/if}}
 </div>
