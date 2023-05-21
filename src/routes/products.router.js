@@ -1,11 +1,16 @@
 import { Router } from "express";
 import ProductManager from "../Dao/manager/ProductManager.js";
-import productModel from "../Dao/Models/products.js";
+import productModel from "../Dao/Models/products.model.js";
 
 const router = Router();
 const productManager = new ProductManager();
 
-router.get("/", async (req, res) => {
+const privateAccess = (req,res,next)=>{
+  if(!req.session.user) return res.redirect('/api/session/login');
+  next();
+}
+
+router.get("/", privateAccess, async (req, res) => {
   const limit = req.query.limit || 10;
   const page = req.query.page || 1;
   const sort = req.query.sort || "";
@@ -31,6 +36,7 @@ router.get("/", async (req, res) => {
     }
 
     res.render("products", {
+      user: req.session.user,
       products,
       totalPages,
       hasPrevPage,

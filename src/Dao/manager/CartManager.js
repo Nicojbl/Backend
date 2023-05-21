@@ -1,21 +1,24 @@
-import cartModel from "../Models/carts.js";
-import productModel from "../Models/products.js";
+import cartModel from "../Models/carts.model.js";
+import productModel from "../Models/products.model.js";
 
 class CartManager {
   async createCart() {
     const cart = await cartModel.create({});
 
-    return cart
+    return cart;
   }
 
   async getCarts() {
     const carts = await cartModel.find();
 
-    return carts
+    return carts;
   }
 
   async getCartById(cid) {
-    const cart = await cartModel.findById(cid).populate("products.product").lean();
+    const cart = await cartModel
+      .findById(cid)
+      .populate("products.product")
+      .lean();
     if (!cart) {
       return {
         code: 400,
@@ -24,14 +27,13 @@ class CartManager {
       };
     }
 
-    return cart
+    return cart;
   }
 
   async addProductToCart(cartId, prodId) {
     // Buscar el producto y el carrito en la base de datos
     const product = await productModel.findById(prodId);
     const cart = await cartModel.findById(cartId);
-
     // Verificar si el producto y el carrito existen
     if (!product || !cart) {
       return {
@@ -61,7 +63,7 @@ class CartManager {
       .populate("products.product");
     console.log(JSON.stringify(result, null, "\t"));
 
-    return result
+    return result;
   }
 
   async deleteCartProd(cartId, prodId) {
@@ -94,7 +96,7 @@ class CartManager {
     await cart.save();
     console.log(JSON.stringify(cart, null, "\t"));
 
-    return product
+    return product;
   }
 
   async deleteCartProducts(cartId) {
@@ -129,7 +131,7 @@ class CartManager {
     cart.products = products;
     await cart.save();
 
-    return cart
+    return cart;
   }
 
   async updateCartQuantity(cartId, prodId, quantity) {
@@ -156,7 +158,7 @@ class CartManager {
     cart.products[productIndex].quantity = quantity;
     await cart.save();
 
-    return cart
+    return cart;
   }
 }
 

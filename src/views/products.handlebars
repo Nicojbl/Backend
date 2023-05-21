@@ -1,4 +1,11 @@
 <div>
+  <div>
+    <h1>Tu perfil (sin datos sensibles)</h1>
+    <p>{{user.name}}</p>
+    <p>{{user.email}}</p>
+    <p>{{user.age}}</p>
+  </div>
+  <br />
   <h1>Productos</h1>
   <br />
   <a href="/api/carts/6465bf6f4ef027694d4f59d2"><button>Carrito</button></a>
@@ -24,4 +31,6 @@
       href="/api/products?limit={{limit}}&page={{nextPage}}&sort={{sort}}&query={{query}}"
     ><button>Siguiente</button></a>
   {{/if}}
+  <br />
+  <a href="/logout"><button>Salir de la cuenta</button></a>
 </div>
