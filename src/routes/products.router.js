@@ -5,10 +5,10 @@ import productModel from "../Dao/Models/products.model.js";
 const router = Router();
 const productManager = new ProductManager();
 
-const privateAccess = (req,res,next)=>{
-  if(!req.session.user) return res.redirect('/api/session/login');
+const privateAccess = (req, res, next) => {
+  if (!req.session.user && !req.session.admin) return res.redirect("/");
   next();
-}
+};
 
 router.get("/", privateAccess, async (req, res) => {
   const limit = req.query.limit || 10;
@@ -16,12 +16,19 @@ router.get("/", privateAccess, async (req, res) => {
   const sort = req.query.sort || "";
   const query = req.query.query || "";
 
+  JSON.stringify(req.session.user, null, "\t");
+  JSON.stringify(req.session.admin, null, "\t");
+
   let products;
 
   if (limit === 10 && page === 1 && sort === "" && query === "") {
     // Renderizar la página sin parámetros de consulta
     products = await productModel.find().lean();
-    res.render("products", { products });
+    res.render("products", {
+      products,
+      user: req.session.user,
+      admin: req.session.admin,
+    });
   } else {
     const { docs, hasPrevPage, hasNextPage, nextPage, prevPage, totalPages } =
       await productModel.paginate(
@@ -37,7 +44,9 @@ router.get("/", privateAccess, async (req, res) => {
 
     res.render("products", {
       user: req.session.user,
+      admin: req.session.admin,
       products,
+      page,
       totalPages,
       hasPrevPage,
       hasNextPage,

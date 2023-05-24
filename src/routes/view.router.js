@@ -8,11 +8,11 @@ const publicAcces = (req,res,next) =>{
     next();
 }
 
-router.get('/register', (req,res)=>{
+router.get('/register', publicAcces, (req,res)=>{
     res.render('register')
 })
 
-router.get('/login', (req,res)=>{
+router.get('/', publicAcces, (req,res)=>{
     res.render('login')
 })
 

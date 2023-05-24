@@ -26,20 +26,27 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  const user = await userModel.findOne({ email, password });
 
-  if (!user) {
-    return res
-      .status(400)
-      .send({ status: "error", error: "Datos incorrectos" });
+  if (email == "adminCoder@coder.com" && password == "adminCod3r123") {
+    req.session.admin = {
+      name: `Coder House`,
+      email: email,
+      rolAdmin: true,
+    };
+  } else {
+    const user = await userModel.findOne({ email, password });
+    if (!user) {
+      return res
+        .status(400)
+        .send({ status: "error", error: "Datos incorrectos" });
+    }
+    req.session.user = {
+      name: `${user.first_name} ${user.last_name}`,
+      email: user.email,
+      age: user.age,
+      rolUser: true,
+    };
   }
-
-  req.session.user = {
-    name: `${user.first_name} ${user.last_name}`,
-    email: user.email,
-    age: user.age,
-  };
-  JSON.stringify(req.session.user, null, "\t")
 
   res.send({
     status: "success",
@@ -54,7 +61,7 @@ router.get("/logout", (req, res) => {
       return res
         .status(500)
         .send({ status: "error", error: "No pudo cerrar sesion" });
-    res.redirect("/login");
+    res.redirect("/");
   });
 });
 
