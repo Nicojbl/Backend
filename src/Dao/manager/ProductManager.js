@@ -26,6 +26,55 @@ class ProductManager {
     }
   }
 
+  async renderProducts(req, res) {
+    const limit = req.query.limit || 10;
+    const page = req.query.page || 1;
+    const sort = req.query.sort || "";
+    const query = req.query.query || "";
+
+    JSON.stringify(req.session.user, null, "\t");
+    JSON.stringify(req.session.admin, null, "\t");
+
+    let products;
+
+    if (limit === 10 && page === 1 && sort === "" && query === "") {
+      // Renderizar la página sin parámetros de consulta
+      products = await productModel.find().lean();
+      res.render("products", {
+        products,
+        user: req.session.user,
+        admin: req.session.admin,
+      });
+    } else {
+      const { docs, hasPrevPage, hasNextPage, nextPage, prevPage, totalPages } =
+        await productModel.paginate(
+          { category: query },
+          { limit, page, sort: { price: sort }, lean: true }
+        );
+      products = docs;
+
+      if (page > totalPages || totalPages <= 0 || isNaN(page)) {
+        // Retornar un mensaje de error si se proporciona un número de página inexistente
+        return res.status(400).send("Número de página no válido");
+      }
+
+      res.render("products", {
+        user: req.session.user,
+        admin: req.session.admin,
+        products,
+        page,
+        totalPages,
+        hasPrevPage,
+        hasNextPage,
+        prevPage,
+        nextPage,
+        limit,
+        sort,
+        query,
+      });
+    }
+  }
+
   async getProducts() {
     const products = await productModel.find();
 
