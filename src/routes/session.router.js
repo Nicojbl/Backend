@@ -1,59 +1,67 @@
 import { Router } from "express";
-import userModel from "../Dao/Models/user.model.js";
+import passport from "passport";
 
 const router = Router();
 
-router.post("/register", async (req, res) => {
-  const { first_name, last_name, email, age, password } = req.body;
-
-  const exist = await userModel.findOne({ email });
-  if (exist) {
-    return res
-      .status(400)
-      .send({ status: "error", error: "User already exists" });
+router.post(
+  "/register",
+  passport.authenticate("register", { failureRedirect: "/failRegister" }),
+  async (req, res) => {
+    res.send({ status: "succes", message: "User registered" });
   }
-  const user = {
-    first_name,
-    last_name,
-    email,
-    age,
-    password,
-  };
+);
 
-  const result = await userModel.create(user);
-  res.send({ status: "succes", message: "User registered" });
+router.get("/failRegister", async (req, res) => {
+  console.log("fallo en el registro");
+  res.send({ status: "error", message: "Error en el registro" });
 });
 
-router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-
-  if (email == "adminCoder@coder.com" && password == "adminCod3r123") {
-    req.session.admin = {
-      name: `Coder House`,
-      email: email,
-      rolAdmin: true,
-    };
-  } else {
-    const user = await userModel.findOne({ email, password });
-    if (!user) {
+router.post(
+  "/login",
+  passport.authenticate("login", { failureRedirect: "/failLogin" }),
+  async (req, res) => {
+    if (!req.user) {
       return res
         .status(400)
-        .send({ status: "error", error: "Datos incorrectos" });
+        .send({ status: "error", message: "credenciales invalidas" });
     }
     req.session.user = {
-      name: `${user.first_name} ${user.last_name}`,
-      email: user.email,
-      age: user.age,
-      rolUser: true,
+      name: `${req.user.first_name} ${req.user.last_name}`,
+      email: req.user.email,
+      age: req.user.age,
     };
-  }
 
+    res.send({
+      status: "success",
+      payload: req.user,
+      message: "Primer logueo!!",
+    });
+  }
+);
+
+router.get("/failLogin", async (req, res) => {
+  console.log("error al logear");
   res.send({
-    status: "success",
+    status: "error",
     payload: req.res.user,
-    message: "Primer logueo!!",
+    message: "error al logear",
   });
 });
+
+router.get(
+  "/github",
+  passport.authenticate("github", { scope: ["user: email"] }),
+  async (req, res) => {}
+);
+
+router.get(
+  "/githubcallback",
+  passport.authenticate("github", { failureRedirect: "/login" }),
+  async (req, res) => {
+    req.session.user = req.user;
+    res.redirect("/");
+  }
+);
 
 router.get("/logout", (req, res) => {
   req.session.destroy((err) => {

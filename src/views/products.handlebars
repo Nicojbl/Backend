@@ -1,21 +1,14 @@
 <div>
   <div>
     <h1>Bienvenido!</h1>
-    {{#if admin.rolAdmin}}
-      <p>{{admin.name}}</p>
-      <p>{{admin.email}}</p>
-      <p style="color: rgb(16, 226, 61);">Admin</p>
-    {{else}}
       <p>{{user.name}}</p>
       <p>{{user.email}}</p>
       <p>{{user.age}}</p>
-      <p>User</p>
-    {{/if}}
   </div>
 
   <br />
 
-  <a href="/api/session/logout"><button>Salir de la cuenta</button></a>
+  <a href="/api/sessions/logout"><button>Salir de la cuenta</button></a>
   <h1>Productos</h1>
   <br />
   <a href="/api/carts/6465bf6f4ef027694d4f59d2"><button>Carrito</button></a>

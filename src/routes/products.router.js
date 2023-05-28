@@ -10,7 +10,7 @@ const privateAccess = (req, res, next) => {
 };
 
 router.get("/", privateAccess, async (req, res) => {
-  await productManager.renderProducts(req, res)
+  await productManager.renderProducts(req, res);
 });
 
 router.get("/:pid", async (req, res) => {

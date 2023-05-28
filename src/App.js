@@ -7,7 +7,9 @@ import mongoose from "mongoose";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import sessionRouter from "./routes/session.router.js";
-import viewRouter from "./routes/view.router.js"
+import viewRouter from "./routes/view.router.js";
+import passport from "passport";
+import initialzePassport from "./config/passport.config.js";
 
 const PORT = process.env.PORT || 8080;
 const app = express();
@@ -30,6 +32,9 @@ app.use(
     saveUninitialized: false,
   })
 );
+initialzePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Vistas
 app.set("views", __dirname + "/views");
@@ -39,8 +44,8 @@ app.engine("handlebars", Handlebars.engine());
 // Rutas
 app.use("/api/products", products);
 app.use("/api/carts", carts);
-app.use("/api/session", sessionRouter);
-app.use('/', viewRouter);
+app.use("/api/sessions", sessionRouter);
+app.use("/", viewRouter);
 
 // Server
 const server = app.listen(PORT, () => {
