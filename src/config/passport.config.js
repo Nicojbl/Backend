@@ -7,14 +7,6 @@ import GithubStrategy from "passport-github2";
 const localStrategy = local.Strategy;
 
 const initialzePassport = () => {
-  passport.serializeUser((user, done) => {
-    done(null, user._id);
-  });
-  passport.deserializeUser(async (id, done) => {
-    const user = await userModel.findById(id);
-    done(null, user);
-  });
-
   passport.use(
     "register",
     new localStrategy(
@@ -74,11 +66,14 @@ const initialzePassport = () => {
         clientSecret: "c220a0afe4fc0cbe35f128a79f87906a044f3a32",
         callbackURL: "http://localhost:8080/api/sessions/githubcallback",
       },
-      async (accessToken, refreshToken, profile, done) => {
+      async (accesToken, refreshToken, profile, done) => {
         try {
           console.log(profile);
-          const user = await userModel.find({ email: profile._json.email });
+          const user = await userModel.findOne({ email: profile._json.email });
           if (!user) {
+            const email =
+              profile._json.email == null ? profile._json.username : null;
+
             const newUser = {
               first_name: profile._json.name,
               last_name: "",
@@ -97,6 +92,14 @@ const initialzePassport = () => {
       }
     )
   );
+
+  passport.serializeUser((user, done) => {
+    done(null, user._id);
+  });
+  passport.deserializeUser(async (id, done) => {
+    const user = await userModel.findById(id);
+    done(null, user);
+  });
 };
 
 export default initialzePassport;
