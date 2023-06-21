@@ -33,7 +33,6 @@ class ProductManager {
     const query = req.query.query || "";
 
     JSON.stringify(req.session.user, null, "\t");
-    JSON.stringify(req.session.admin, null, "\t");
 
     let products;
 
@@ -43,7 +42,6 @@ class ProductManager {
       res.render("products", {
         products,
         user: req.session.user,
-        admin: req.session.admin,
       });
     } else {
       const { docs, hasPrevPage, hasNextPage, nextPage, prevPage, totalPages } =

@@ -1,71 +1,16 @@
 import { Router } from "express";
-import CartManager from "../Dao/manager/CartManager.js";
+import CartController from "../controllers/carts.controller.js";
 
 const router = Router();
-const cartManager = new CartManager();
+const cartController = new CartController()
 
-router.post("/", async (req, res) => {
-  const result = await cartManager.createCart();
-
-  res.send(result);
-});
-
-router.get("/", async (req, res) => {
-  const result = await cartManager.getCarts();
-
-  res.send(result);
-});
-
-router.get("/:cid", async (req, res) => {
-  const cid = req.params.cid;
-
-  const cart = await cartManager.getCartById(cid);
-
-  res.render("cart", { cart: cart });
-});
-
-router.post("/:cid/product/:pid", async (req, res) => {
-  const cid = req.params.cid;
-  const pid = req.params.pid;
-
-  const result = await cartManager.addProductToCart(cid, pid);
-
-  res.send(result);
-});
-
-router.delete("/:cid/product/:pid", async (req, res) => {
-  const { cid, pid } = req.params;
-
-  const result = await cartManager.deleteCartProd(cid, pid);
-
-  res.send(result);
-});
-
-router.delete("/:cid", async (req, res) => {
-  const cid = req.params.cid;
-
-  const result = await cartManager.deleteCartProducts(cid);
-
-  res.send(result);
-});
-
-router.put("/:cid", async (req, res) => {
-  const cid = req.params.cid;
-  const products = req.body.products;
-
-  const result = await cartManager.updateCartProduct(cid, products);
-
-  res.send(result);
-});
-
-router.put("/:cid/product/:pid", async (req, res) => {
-  const cid = req.params.cid;
-  const pid = req.params.pid;
-  const quantity = req.body.quantity;
-
-  const result = await cartManager.updateCartQuantity(cid, pid, quantity);
-
-  res.send(result);
-});
+router.post("/", cartController.createCart);
+router.get("/", cartController.getCarts);
+router.get("/:cid", cartController.getCartById);
+router.post("/:cid/product/:pid", cartController.addProductToCart);
+router.delete("/:cid/product/:pid", cartController.deteleCartProd);
+router.delete("/:cid", cartController.deleteCartProducts);
+router.put("/:cid", cartController.updateCartProd);
+router.put("/:cid/product/:pid", cartController.updateCartQuantity);
 
 export default router;

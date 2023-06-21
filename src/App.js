@@ -10,11 +10,13 @@ import sessionRouter from "./routes/session.router.js";
 import viewRouter from "./routes/view.router.js";
 import passport from "passport";
 import initialzePassport from "./config/passport.config.js";
+import dotenv from "dotenv";
 
-const PORT = process.env.PORT || 8080;
+dotenv.config();
+
+const PORT = process.env.PORT;
 const app = express();
-const mongo =
-  "mongodb+srv://Nicolas:Basso@cluster0.j6z6cun.mongodb.net/?retryWrites=true&w=majority";
+const mongo = process.env.MONGO_URL;
 const connect = await mongoose.connect(mongo);
 
 // Servicio
@@ -27,7 +29,7 @@ app.use(
       mongoUrl: mongo,
       ttl: 3600,
     }),
-    secret: "CoderSecret",
+    secret: process.env.SECRET_SESSION,
     resave: false,
     saveUninitialized: false,
   })

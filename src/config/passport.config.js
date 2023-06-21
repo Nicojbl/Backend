@@ -19,12 +19,17 @@ const initialzePassport = () => {
             console.log("el usuario ya existe");
             return done(null, false);
           }
+          let rolAdmin = false;
+          if ((username = process.env.EMAIL_ADMIN)) {
+            rolAdmin = true;
+          }
           const newUser = {
             first_name,
             last_name,
             email,
             age,
             password: createHash(password),
+            rolAdmin,
           };
 
           const result = await userModel.create(newUser);
@@ -62,9 +67,9 @@ const initialzePassport = () => {
     "github",
     new GithubStrategy(
       {
-        clientID: "Iv1.9b31633614b2cb34",
-        clientSecret: "c220a0afe4fc0cbe35f128a79f87906a044f3a32",
-        callbackURL: "http://localhost:8080/api/sessions/githubcallback",
+        clientID: process.env.CLIENT_ID,
+        clientSecret: process.env.CLIENT_SECRET,
+        callbackURL: process.env.CALLBACL_URL,
       },
       async (accesToken, refreshToken, profile, done) => {
         try {

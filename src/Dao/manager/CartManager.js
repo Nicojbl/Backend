@@ -118,7 +118,7 @@ class CartManager {
     };
   }
 
-  async updateCartProduct(cartId, products) {
+  async updateCartProd(cartId, products) {
     const cart = await cartModel.findById(cartId);
     if (!cart) {
       return {

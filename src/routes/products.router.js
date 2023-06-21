@@ -1,48 +1,15 @@
 import { Router } from "express";
-import ProductManager from "../Dao/manager/ProductManager.js";
+import ProductController from "../controllers/products.controller.js";
+import Middlewares from "../middlewares/valitations.js";
 
 const router = Router();
-const productManager = new ProductManager();
+const productController = new ProductController();
+const middlewares = new Middlewares();
 
-const privateAccess = (req, res, next) => {
-  if (!req.session.user && !req.session.admin) return res.redirect("/");
-  next();
-};
-
-router.get("/", privateAccess, async (req, res) => {
-  await productManager.renderProducts(req, res);
-});
-
-router.get("/:pid", async (req, res) => {
-  const pid = req.params.pid;
-
-  const prod = await productManager.getProductByID(pid);
-
-  res.render("prod", { prod });
-});
-
-router.post("/", async (req, res) => {
-  const product = req.body;
-
-  const result = await productManager.addProduct(product);
-
-  res.send(result);
-});
-
-router.put("/:pid", async (req, res) => {
-  const id = req.params.pid;
-  const product = req.body;
-  const result = await productManager.updateProduct(id, product);
-
-  res.send(result);
-});
-
-router.delete("/:pid", async (req, res) => {
-  const id = req.params.pid;
-
-  const result = await productManager.deleteProduct(id);
-
-  res.send(result);
-});
+router.get("/", middlewares.privateAccess, productController.renderProducts);
+router.get("/:pid", productController.getProductById);
+router.post("/", productController.addProduct);
+router.put("/:pid", productController.updateProducts);
+router.delete("/:pid", productController.deleteProducts);
 
 export default router;

@@ -1,19 +1,12 @@
-import { Router } from 'express';
+import { Router } from "express";
+import Middlewares from "../middlewares/valitations.js";
+import ViewController from "../controllers/view.controller.js";
 
 const router = Router();
+const middlewares = new Middlewares();
+const viewController = new ViewController();
 
-
-const publicAcces = (req,res,next) =>{
-    if(req.session.user) return res.redirect('/api/products');
-    next();
-}
-
-router.get('/register', publicAcces, (req,res)=>{
-    res.render('register')
-})
-
-router.get('/', publicAcces, (req,res)=>{
-    res.render('login')
-})
+router.get("/register", middlewares.publicAccess, viewController.register);
+router.get("/", middlewares.publicAccess, viewController.login);
 
 export default router;
