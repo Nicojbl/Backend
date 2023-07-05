@@ -1,13 +1,13 @@
 <div>
   <div>
     <h1>Bienvenido!</h1>
-    {{#if user.rol}}
-      <p>{{user.first_name}}</p>
+    {{#if user.rolAdmin}}
+      <p>{{user.fullName}}</p>
       <p>{{user.email}}</p>
       <p>{{user.age}}</p>
       <p style="color: rgb(16, 226, 61);">Admin</p>
     {{else}}
-      <p>{{user.first_name}}</p>
+      <p>{{user.fullName}}</p>
       <p>{{user.email}}</p>
       <p>{{user.age}}</p>
     {{/if}}

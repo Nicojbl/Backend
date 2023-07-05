@@ -1,5 +1,10 @@
 import cartModel from "../Models/carts.model.js";
 import productModel from "../Models/products.model.js";
+import ticketModel from "../Models/ticket.model.js";
+import ProductManager from "./ProductManager.js";
+import { v4 as uuidv4 } from "uuid";
+
+const productManager = new ProductManager();
 
 class CartManager {
   async createCart() {
@@ -61,7 +66,6 @@ class CartManager {
     const result = await cartModel
       .findById(cartId)
       .populate("products.product");
-    console.log(JSON.stringify(result, null, "\t"));
 
     return result;
   }
@@ -159,6 +163,73 @@ class CartManager {
     await cart.save();
 
     return cart;
+  }
+
+  async finishBuy(cid, req) {
+    const cart = await this.getCartById(cid);
+    if (!cart) {
+      return {
+        code: 400,
+        status: "Error",
+        message: "Carrito no encontrado",
+      };
+    }
+
+    if (cart.products.length === 0) {
+      return {
+        code: 400,
+        status: "Error",
+        message: "no hay productos en el carrito",
+      };
+    }
+
+    const noStockProd = [];
+    const productsBuy = [];
+    let total = 0;
+
+    for (let i = 0; i < cart.products.length; i++) {
+      const cartProduct = cart.products[i];
+      const productDB = await productManager.getProductByID(
+        cartProduct.product._id
+      );
+      if (cartProduct.quantity <= productDB.stock) {
+        total += cartProduct.quantity * productDB.price;
+        productDB.stock -= cartProduct.quantity;
+        const prodUpdated = await productManager.updateProductStock(
+          cartProduct.product._id,
+          productDB.stock
+        );
+        productsBuy.push(prodUpdated);
+      } else {
+        noStockProd.push(cartProduct);
+      }
+    }
+
+    if (noStockProd.length > 0) {
+      return {
+        status: 400,
+        message: "producto/s sin stock",
+        products: noStockProd,
+      };
+    }
+
+    const id = uuidv4();
+    const newTicket = {
+      code: id,
+      purchase_datatime: new Date().toLocaleDateString(),
+      productsBuy,
+      amount: total,
+      purchaser: req.session.user.email,
+    };
+
+    await ticketModel.create(newTicket);
+    await this.deleteCartProducts(cid);
+
+    return {
+      status: "success",
+      massage: "Compra realizada",
+      products: newTicket,
+    };
   }
 }
 

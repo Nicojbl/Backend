@@ -1,3 +1,7 @@
+import { UserRepository } from "../repository/user.repository.js";
+
+const userRepository = new UserRepository();
+
 class SessionController {
   async userRegistered(req, res) {
     res.send({ status: "succes", message: "User registered" });
@@ -12,12 +16,8 @@ class SessionController {
         .status(400)
         .send({ status: "error", message: "credenciales invalidas" });
     }
-    req.session.user = {
-      name: `${req.user.first_name} ${req.user.last_name}`,
-      email: req.user.email,
-      age: req.user.age,
-      rol: req.user.rolAdmin,
-    };
+
+    req.session.user = await userRepository.CreateUserDto(req.user);
 
     res.send({
       status: "success",

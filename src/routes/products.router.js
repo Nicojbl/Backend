@@ -8,8 +8,8 @@ const middlewares = new Middlewares();
 
 router.get("/", middlewares.privateAccess, productController.renderProducts);
 router.get("/:pid", productController.getProductById);
-router.post("/", productController.addProduct);
-router.put("/:pid", productController.updateProducts);
-router.delete("/:pid", productController.deleteProducts);
+router.post("/", productController.addProduct, middlewares.adminAccess);
+router.put("/:pid", productController.updateProducts, middlewares.adminAccess);
+router.delete("/:pid", productController.deleteProducts, middlewares.adminAccess);
 
 export default router;

@@ -93,6 +93,28 @@ class ProductManager {
     return product;
   }
 
+  async updateProductStock(productId, newStock) {
+    try {
+      const product = await productModel.findById(productId);
+      if (!product) {
+        return { success: false, message: "Producto no encontrado" };
+      }
+
+      // Actualizar el stock del producto con el nuevo valor
+      product.stock = newStock;
+
+      // Guardar los cambios en la base de datos
+      await product.save();
+
+      return product;
+    } catch (error) {
+      return {
+        success: false,
+        message: "Error al actualizar el stock del producto",
+      };
+    }
+  }
+
   async deleteProduct(pid) {
     const product = await productModel.deleteOne({ _id: pid });
 

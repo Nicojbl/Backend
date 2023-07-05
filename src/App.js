@@ -10,14 +10,12 @@ import sessionRouter from "./routes/session.router.js";
 import viewRouter from "./routes/view.router.js";
 import passport from "passport";
 import initialzePassport from "./config/passport.config.js";
-import dotenv from "dotenv";
+import { options } from "./config/config.js";
 
-dotenv.config();
-
-const PORT = process.env.PORT;
 const app = express();
-const mongo = process.env.MONGO_URL;
-const connect = await mongoose.connect(mongo);
+const PORT = options.server.port;
+const mongo = options.mongo.url;
+await mongoose.connect(mongo);
 
 // Servicio
 app.use(express.urlencoded({ extended: true }));
