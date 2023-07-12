@@ -1,4 +1,9 @@
-import productModel from "../Models/products.model.js";
+import productModel from "../../Models/products.model.js";
+import { CustomError } from "../../../services/errors/customError.js";
+import { EError } from "../../../services/errors/enums.js";
+import { DirectoryErrors } from "../../../services/errors/info.js";
+
+const directoryErrors = new DirectoryErrors();
 
 class ProductManager {
   async addProduct(_product) {
@@ -76,21 +81,28 @@ class ProductManager {
   async getProducts() {
     const products = await productModel.find();
 
+    if (!products) {
+      return { success: false, message: "Productso no encontrados" };
+    }
+
     return products;
   }
 
   async getProductByID(pid) {
-    const product = await productModel.findById(pid).lean();
-
-    if (!product) {
-      return {
-        code: 400,
-        status: "Error",
-        message: "No se ha encontrado un product con ese ID",
-      };
+    try {
+      const product = await productModel.findById(pid).lean();
+      if (!product) {
+        CustomError.createError({
+          name: "Get product id error",
+          cause: directoryErrors.ProductErrorId(pid),
+          message: "Error intentando obtener el producto con la id ingresada",
+          errorCode: EError.INVALID_PARAM,
+        });
+      }
+      return product;
+    } catch (error) {
+      console.log("Error al buscar el producto: " + error)
     }
-
-    return product;
   }
 
   async updateProductStock(productId, newStock) {

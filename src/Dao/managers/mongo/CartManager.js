@@ -1,6 +1,6 @@
-import cartModel from "../Models/carts.model.js";
-import productModel from "../Models/products.model.js";
-import ticketModel from "../Models/ticket.model.js";
+import cartModel from "../../Models/carts.model.js";
+import productModel from "../../Models/products.model.js";
+import ticketModel from "../../Models/ticket.model.js";
 import ProductManager from "./ProductManager.js";
 import { v4 as uuidv4 } from "uuid";
 

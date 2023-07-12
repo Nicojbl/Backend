@@ -1,5 +1,5 @@
 import { Router } from "express";
-import Middlewares from "../middlewares/valitations.js";
+import Middlewares from "../middlewares/permitions/valitations.js";
 import ViewController from "../controllers/view.controller.js";
 
 const router = Router();

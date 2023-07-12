@@ -1,4 +1,6 @@
-import ProductManager from "../Dao/manager/ProductManager.js";
+import ProductManager from "../Dao/managers/mongo/ProductManager.js";
+// import ProductManager from "../Dao/managers/file/ProductManager.js";
+import { generateProducts } from "../utils.js";
 
 const productManager = new ProductManager();
 
@@ -33,6 +35,11 @@ class ProductController {
     const result = await productManager.deleteProduct(id);
 
     res.send(result);
+  }
+  mockingProducts(req, res) {
+    const products = generateProducts();
+
+    res.json({products});
   }
 }
 

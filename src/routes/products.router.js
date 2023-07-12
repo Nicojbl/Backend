@@ -1,15 +1,16 @@
 import { Router } from "express";
 import ProductController from "../controllers/products.controller.js";
-import Middlewares from "../middlewares/valitations.js";
+import Middlewares from "../middlewares/permitions/valitations.js";
 
 const router = Router();
 const productController = new ProductController();
 const middlewares = new Middlewares();
 
+router.get("/mockingproducts", middlewares.adminAccess, middlewares.privateAccess, productController.mockingProducts)
 router.get("/", middlewares.privateAccess, productController.renderProducts);
+router.post("/", middlewares.adminAccess, productController.addProduct);
 router.get("/:pid", productController.getProductById);
-router.post("/", productController.addProduct, middlewares.adminAccess);
-router.put("/:pid", productController.updateProducts, middlewares.adminAccess);
-router.delete("/:pid", productController.deleteProducts, middlewares.adminAccess);
+router.put("/:pid", middlewares.adminAccess, productController.updateProducts);
+router.delete("/:pid", middlewares.adminAccess, productController.deleteProducts);
 
 export default router;

@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
   rolAdmin: Boolean,
 });
 
+
 const userModel = mongoose.model(userCollection, userSchema);
 
 export default userModel;

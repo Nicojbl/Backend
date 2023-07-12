@@ -11,6 +11,7 @@ import viewRouter from "./routes/view.router.js";
 import passport from "passport";
 import initialzePassport from "./config/passport.config.js";
 import { options } from "./config/config.js";
+import { errorHandler } from "./middlewares/errors/ErrorHandler.js";
 
 const app = express();
 const PORT = options.server.port;
@@ -46,6 +47,7 @@ app.use("/api/products", products);
 app.use("/api/carts", carts);
 app.use("/api/sessions", sessionRouter);
 app.use("/", viewRouter);
+app.use(errorHandler);
 
 // Server
 const server = app.listen(PORT, () => {

@@ -1,4 +1,5 @@
-import CartManager from "../Dao/manager/CartManager.js";
+import CartManager from "../Dao/managers/mongo/CartManager.js";
+// import CartManager from "../Dao/managers/file/CartManager.js";
 
 const cartManager = new CartManager();
 
@@ -60,9 +61,9 @@ class CartController {
     res.send(result);
   }
   async finishBuy(req, res) {
-    const cid = req.params.cid
+    const cid = req.params.cid;
 
-    const result = await cartManager.finishBuy(cid, req, res)
+    const result = await cartManager.finishBuy(cid, req, res);
 
     res.send(result);
   }

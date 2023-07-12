@@ -1,0 +1,28 @@
+[
+	{
+		"title": "monopatin 11",
+		"description": "velocidad maxima 30km",
+		"price": "1000",
+		"stock": 10,
+		"status": true,
+		"category": "monopatin",
+		"id": 1
+	},
+	{
+		"title": "monopatin",
+		"description": "duradero",
+		"price": "1500",
+		"stock": 20,
+		"status": true,
+		"category": "monopatin",
+		"id": 2
+	},
+	{
+		"title": "moto",
+		"description": "velocidad maxima 150km",
+		"price": "3500",
+		"stock": 40,
+		"category": "Motocicleta",
+		"id": 3
+	}
+]

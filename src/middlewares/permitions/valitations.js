@@ -8,11 +8,19 @@ class Middlewares {
     next();
   }
   async adminAccess(req, res, next) {
-    if ((req.session.user.rolAdmin = false)) return res.redirect("/");
+    if (!req.session.user.rolAdmin)
+      return res.send({
+        status: 403,
+        message: "no autorizado!",
+      });
     next();
   }
   async userAccess(req, res, next) {
-    if ((req.session.user.rolAdmin = true)) return res.redirect("/");
+    if (req.session.user.rolAdmin)
+      return res.send({
+        status: 403,
+        message: "no autorizado!",
+      });
     next();
   }
 }
