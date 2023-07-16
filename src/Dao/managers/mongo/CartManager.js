@@ -98,7 +98,6 @@ class CartManager {
       product.quantity--;
     }
     await cart.save();
-    console.log(JSON.stringify(cart, null, "\t"));
 
     return product;
   }

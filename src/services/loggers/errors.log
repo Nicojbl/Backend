@@ -1,0 +1,5 @@
+{"level":"info","message":"GET en /api/errors/loggerTest - 16/7/2023"}
+{"level":"fatal","message":"Error!!"}
+{"level":"error","message":"Error!!"}
+{"level":"warn","message":"Error!!"}
+{"level":"info","message":"Error!!"}

@@ -15,7 +15,7 @@ class ProductController {
   async getProductById(req, res) {
     const pid = req.params.pid;
 
-    const prod = await productManager.getProductByID(pid);
+    const prod = await productManager.getProductByID(pid, req);
 
     res.render("prod", { prod });
   }

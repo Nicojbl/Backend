@@ -63,7 +63,7 @@ class CartController {
   async finishBuy(req, res) {
     const cid = req.params.cid;
 
-    const result = await cartManager.finishBuy(cid, req, res);
+    const result = await cartManager.finishBuy(cid, req);
 
     res.send(result);
   }

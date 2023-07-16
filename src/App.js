@@ -1,17 +1,19 @@
 import express from "express";
 import carts from "./routes/carts.router.js";
 import products from "./routes/products.router.js";
+import sessionRouter from "./routes/session.router.js";
+import viewRouter from "./routes/view.router.js";
+import errors from "./services/loggers/EndpointTest.js"
 import __dirname from "./utils.js";
 import Handlebars from "express-handlebars";
 import mongoose from "mongoose";
 import session from "express-session";
 import MongoStore from "connect-mongo";
-import sessionRouter from "./routes/session.router.js";
-import viewRouter from "./routes/view.router.js";
 import passport from "passport";
 import initialzePassport from "./config/passport.config.js";
 import { options } from "./config/config.js";
 import { errorHandler } from "./middlewares/errors/ErrorHandler.js";
+import { addLogger } from "./services/loggers/logger.js";
 
 const app = express();
 const PORT = options.server.port;
@@ -36,6 +38,8 @@ app.use(
 initialzePassport();
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(errorHandler);
+app.use(addLogger)
 
 // Vistas
 app.set("views", __dirname + "/views");
@@ -46,8 +50,8 @@ app.engine("handlebars", Handlebars.engine());
 app.use("/api/products", products);
 app.use("/api/carts", carts);
 app.use("/api/sessions", sessionRouter);
+app.use("/api/errors", errors)
 app.use("/", viewRouter);
-app.use(errorHandler);
 
 // Server
 const server = app.listen(PORT, () => {

@@ -82,13 +82,13 @@ class ProductManager {
     const products = await productModel.find();
 
     if (!products) {
-      return { success: false, message: "Productso no encontrados" };
+      req.logger.error("Error! productos no encontrados");
     }
 
     return products;
   }
 
-  async getProductByID(pid) {
+  async getProductByID(pid, req) {
     try {
       const product = await productModel.findById(pid).lean();
       if (!product) {
@@ -101,7 +101,7 @@ class ProductManager {
       }
       return product;
     } catch (error) {
-      console.log("Error al buscar el producto: " + error)
+      req.logger.error("Error!!" + JSON.stringify(error, null, "\t"));
     }
   }
 
