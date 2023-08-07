@@ -10,7 +10,7 @@ router.post("/", cartController.createCart);
 router.get("/", cartController.getCarts);
 router.get("/:cid", cartController.getCartById);
 router.get("/:cid/purchase", cartController.finishBuy)
-router.post("/:cid/product/:pid", middlewares.userAccess, cartController.addProductToCart);
+router.post("/:cid/product/:pid", cartController.addProductToCart);
 router.delete("/:cid/product/:pid", cartController.deteleCartProd);
 router.delete("/:cid", cartController.deleteCartProducts);
 router.put("/:cid", cartController.updateCartProd);

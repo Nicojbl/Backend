@@ -63,12 +63,19 @@ components:
             quantity: 2
           - product: ObjectId('64642750c4635ab6bb32f2cd')
             quantity: 4
+    updateCartQuantity:
+      type: object
+      properties:
+        quantity:
+          type: Number
+          description: cantidad de productos
+
 paths:
   /api/carts/:
     get:
       summary: Obtengo todos los carritos
       tags:
-        - Carrito
+        - Cart
       responses:
         "200":
           description: Los carritos se obtuvieron de forma correcta.
@@ -83,7 +90,7 @@ paths:
     post:
       summary: Creo un carrito
       tags:
-        - Carrito
+        - Cart
       responses:
         "200":
           description: El carrito se creo de forma correcta.
@@ -99,7 +106,7 @@ paths:
     get:
       summary: Obtengo carrito por id
       tags:
-        - Carrito
+        - Cart
       parameters:
         - name: cid
           in: path
@@ -121,7 +128,7 @@ paths:
     delete:
       summary: Elimino los productos del carrito
       tags:
-        - Carrito
+        - Cart
       parameters:
         - name: cid
           in: path
@@ -143,7 +150,7 @@ paths:
     put:
       summary: Actualizo los productos del carrito
       tags:
-        - Carrito
+        - Cart
       requestBody:
         required: true
         content:
@@ -159,5 +166,96 @@ paths:
                 type: array
                 items:
                   $ref: "#components/schemas/Cart"
+        "500":
+          description: Error interno del servidor.
+  /api/carts/{cid}/product/{pid}:
+    post:
+      summary: Agregar un producto al carrito seleccionado
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cid es el id del carrito
+          schema:
+            $type: string
+        - name: pid
+          in: path
+          required: true
+          description: pid es el id del producto
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: El producto se agrego de forma correcta del carrito.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/requestBodies/updateCart"
+        "500":
+          description: Error interno del servidor.
+    delete:
+      summary: Eliminar un producto del carrito seleccionado
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cid es el id del carrito
+          schema:
+            $type: string
+        - name: pid
+          in: path
+          required: true
+          description: pid es el id del producto
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: El producto se elimino de forma correcta del carrito.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/requestBodies/createCart"
+        "500":
+          description: Error interno del servidor.
+    put:
+      summary: Actualizar el quantity del producto seleccionado
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cid es el id del carrito
+          schema:
+            $type: string
+        - name: pid
+          in: path
+          required: true
+          description: pid es el id del producto
+          schema:
+            $type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/updateCartQuantity"
+      responses:
+        "200":
+          description: El producto se elimino de forma correcta del carrito.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/requestBodies/updateCart"
         "500":
           description: Error interno del servidor.
