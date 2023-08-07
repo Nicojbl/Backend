@@ -12,6 +12,11 @@ class ProductController {
 
     res.send(result);
   }
+  async getProducts(req, res) {
+    const result = await productManager.getProducts()
+    
+    res.send(result)
+  }
   async getProductById(req, res) {
     const pid = req.params.pid;
 

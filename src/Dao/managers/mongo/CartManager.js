@@ -34,7 +34,7 @@ class CartManager {
 
     return cart;
   }
-
+  
   async addProductToCart(cartId, prodId) {
     // Buscar el producto y el carrito en la base de datos
     const product = await productModel.findById(prodId);

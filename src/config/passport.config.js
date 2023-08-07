@@ -6,9 +6,11 @@ import GithubStrategy from "passport-github2";
 import { CustomError } from "../services/errors/customError.js";
 import { EError } from "../services/errors/enums.js";
 import { DirectoryErrors } from "../services/errors/info.js";
+import CartManager from "../Dao/managers/mongo/CartManager.js";
 
 const directoryErrors = new DirectoryErrors();
 const localStrategy = local.Strategy;
+const cartManager = new CartManager();
 
 const initialzePassport = () => {
   passport.use(
@@ -25,7 +27,7 @@ const initialzePassport = () => {
               message: "Error creando el usuario",
               errorCode: EError.INVALID_TYPES_ERROR,
             });
-            // tuve que poner esto por que me llevaba al login cuando habia un error y no se como arreglarlo 
+            // tuve que poner esto por que me llevaba al login cuando habia un error y no se como arreglarlo
             window.location.replace("/register");
           }
           const user = await userModel.findOne({ email: username });
@@ -68,6 +70,19 @@ const initialzePassport = () => {
           }
           if (!validatePassword(password, user)) {
             return done(null, false);
+          }
+          const userCartId = user.cart;
+          if (!userCartId) {
+            const createdCart = await cartManager.createCart({ products: [] });
+            user.cart = createdCart._id;
+            await user.save();
+          } else {
+            let cart = await cartManager.getCartById(userCartId);
+            if (!cart) {
+              const createdCart = await cartManager.createCart({ products: [] });
+              await user.save();
+              user.cart = createdCart._id;
+            }
           }
           return done(null, user);
         } catch (error) {

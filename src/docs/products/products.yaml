@@ -1,0 +1,161 @@
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: id del producto
+        title:
+          type: String
+          description: Nombre del producto
+        description:
+          type: String
+          description: Descripcion del producto
+        price:
+          type: Number
+          description: Precio del producto
+        stock:
+          type: Number
+          description: Cantidad de stock
+        category:
+          type: String
+          description: Categoria del producto
+      example:
+        _id: ObjectId('64642736c4635ab6bb32f2bf')
+        title: "moto"
+        description: "velocidad maxima 150km"
+        price: 500
+        stock: 30
+        category: "motocicleta"
+  requestBodies:
+    updateProduct:
+      type: object
+      properties:
+        title:
+          type: String
+          description: Nombre del producto
+        description:
+          type: String
+          description: Descripcion del producto
+        price:
+          type: Number
+          description: Precio del producto
+        stock:
+          type: Number
+          description: Cantidad de stock
+        category:
+          type: String
+          description: Categoria del producto
+      example:
+        title: "moto"
+        description: "veloz"
+        price: 1500
+        stock: 50
+        category: "motocicleta"
+
+paths:
+  /api/products/getAll:
+    get:
+      summary: Obtengo todos los productos
+      tags:
+        - Product
+      responses:
+        "200":
+          description: Los productos se obtuvieron de forma correcta.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Product"
+        "500":
+          description: Error interno del servidor.
+  /api/products/{pid}:
+    get:
+      summary: Obtengo el producto por id
+      tags:
+        - Product
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: pid es el id del producto
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: El producto se obtuvo de forma correcta.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Product"
+        "500":
+          description: Error interno del servidor.
+    put:
+      summary: Actualizo un producto
+      tags:
+        - Product
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: pid es el id del producto que desea actualizar
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: El producto se actualizo de forma correcta.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/requestBodies/updateProduct"
+        "500":
+          description: Error interno del servidor.
+    delete:
+      summary: Elimino un producto por id
+      tags:
+        - Product
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: pid es el id del producto que desea actualizar
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: El producto se elimino de forma correcta.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Product"
+        "500":
+          description: Error interno del servidor.
+    post:
+      summary: Agrega un producto
+      tags:
+        - Product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+             $ref: "#components/requestBodies/updateProduct"
+      responses:
+        "200":
+          description: El producto se ha agregado de forma correcta.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Product"
+        "500":
+          description: Error interno del servidor.

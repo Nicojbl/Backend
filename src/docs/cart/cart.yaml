@@ -1,0 +1,163 @@
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: id del carrito
+        products:
+          type: object
+          properties:
+            product:
+              type: string
+              description: id del producto
+            quantity:
+              type: Number
+              description: cantidad de productos
+      example:
+        _id: ObjectId('64d0304fe411ad1b016f229f')
+        products:
+          - product: ObjectId('6464273dc4635ab6bb32f2c1')
+            quantity: 2
+  requestBodies:
+    createCart:
+      type: objetct
+      properties:
+        _id:
+          type: ObjectId
+          description: id del carrito
+        products:
+          type: object
+          properties:
+            product:
+              type: string
+              description: id del producto
+            quantity:
+              type: Number
+              description: cantidad de productos
+      example:
+        _id: ObjectId('64d0304fe411ad1b016f229f')
+        products:
+          - product: []
+            quantity: 0
+    updateCart:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: id del carrito
+        products:
+          type: object
+          properties:
+            product:
+              type: string
+              description: id del producto
+            quantity:
+              type: Number
+              description: cantidad de productos
+      example:
+        _id: ObjectId('64d0304fe411ad1b016f229f')
+        products:
+          - product: ObjectId('6464273dc4635ab6bb32f2c1')
+            quantity: 2
+          - product: ObjectId('64642750c4635ab6bb32f2cd')
+            quantity: 4
+paths:
+  /api/carts/:
+    get:
+      summary: Obtengo todos los carritos
+      tags:
+        - Carrito
+      responses:
+        "200":
+          description: Los carritos se obtuvieron de forma correcta.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Cart"
+        "500":
+          description: Error interno del servidor.
+    post:
+      summary: Creo un carrito
+      tags:
+        - Carrito
+      responses:
+        "200":
+          description: El carrito se creo de forma correcta.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/requestBodies/createCart"
+        "500":
+          description: Error interno del servidor.
+  /api/carts/{cid}:
+    get:
+      summary: Obtengo carrito por id
+      tags:
+        - Carrito
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cid es el id del carrito
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: El carrito se obtuvo de forma correcta.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Cart"
+        "500":
+          description: Error interno del servidor.
+    delete:
+      summary: Elimino los productos del carrito
+      tags:
+        - Carrito
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cid es el id del carrito
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Los productos se eliminaron de forma correcta del carrito.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/requestBodies/createCart"
+        "500":
+          description: Error interno del servidor.
+    put:
+      summary: Actualizo los productos del carrito
+      tags:
+        - Carrito
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/updateCart"
+      responses:
+        "200":
+          description: Los productos se actualizaron de forma correcta.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Cart"
+        "500":
+          description: Error interno del servidor.
