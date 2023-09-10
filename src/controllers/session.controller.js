@@ -1,4 +1,8 @@
 import { UserRepository } from "../repository/user.repository.js";
+import jwt  from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const userRepository = new UserRepository();
 
@@ -16,14 +20,11 @@ class SessionController {
         .status(400)
         .send({ status: "error", message: "credenciales invalidas" });
     }
-
     req.session.user = await userRepository.CreateUserDto(req.user);
-
-    res.send({
-      status: "success",
-      payload: req.user,
-      message: "Login Success",
-    });
+    const user = req.session.user
+    const token = jwt.sign({user}, process.env.PRIVATE_KEY, {expiresIn: "1h"})
+    console.log(token)
+    res.cookie("coderCookie", token, {httpOnly:true}).send({status:"success", message:"ingreso correcto", token})
   }
   async errorLogin(req, res) {
     console.log("error al logear");

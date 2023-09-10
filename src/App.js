@@ -2,6 +2,7 @@ import express from "express";
 import carts from "./routes/carts.router.js";
 import products from "./routes/products.router.js";
 import sessionRouter from "./routes/session.router.js";
+import userRouter from "./routes/users.router.js";
 import viewRouter from "./routes/view.router.js";
 import errors from "./services/loggers/EndpointTest.js";
 import __dirname from "./utils.js";
@@ -16,6 +17,7 @@ import { errorHandler } from "./middlewares/errors/ErrorHandler.js";
 import { addLogger } from "./services/loggers/logger.js";
 import { swaggerSpecs } from "./config/docConfig.js";
 import swaggerUi from "swagger-ui-express";
+import cookieParser from "cookie-parser";
 
 const app = express();
 const PORT = options.server.port;
@@ -38,6 +40,7 @@ app.use(
   })
 );
 initialzePassport();
+app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(errorHandler);
@@ -52,6 +55,7 @@ app.engine("handlebars", Handlebars.engine());
 app.use("/api/products", products);
 app.use("/api/carts", carts);
 app.use("/api/sessions", sessionRouter);
+app.use("/api/users", userRouter);
 app.use("/api/errors", errors);
 app.use("/", viewRouter);
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));

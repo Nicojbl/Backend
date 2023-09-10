@@ -2,6 +2,9 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import bcrypt from "bcrypt";
 import { Faker, en } from "@faker-js/faker";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export const createHash = (password) =>
   bcrypt.hashSync(password, bcrypt.genSaltSync(10));
@@ -30,7 +33,7 @@ const newProduct = () => {
 export const generateProducts = () => {
   let products = [];
   for (let i = 0; i < 100; i++) {
-    const product = newProduct()
+    const product = newProduct();
     products.push(product);
   }
   return products;

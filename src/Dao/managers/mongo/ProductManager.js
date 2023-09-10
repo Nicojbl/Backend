@@ -20,7 +20,7 @@ class ProductManager {
       return {
         code: 202,
         status: "Success",
-        message: `El producto ${product.title} ha sido agregado con Ã©xito.`,
+        message: `El producto ${product.title} ha sido agregado con exito.`,
       };
     } catch (error) {
       return {

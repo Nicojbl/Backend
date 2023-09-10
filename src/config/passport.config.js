@@ -7,6 +7,13 @@ import { CustomError } from "../services/errors/customError.js";
 import { EError } from "../services/errors/enums.js";
 import { DirectoryErrors } from "../services/errors/info.js";
 import CartManager from "../Dao/managers/mongo/CartManager.js";
+import jwt from "passport-jwt";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const JWTStrategy = jwt.Strategy;
+const ExtractJWT = jwt.ExtractJwt;
 
 const directoryErrors = new DirectoryErrors();
 const localStrategy = local.Strategy;
@@ -36,6 +43,7 @@ const initialzePassport = () => {
             return done(null, false);
           }
           let rolAdmin = false;
+          let rolPremium = false;
           if ((username = process.env.EMAIL_ADMIN)) {
             rolAdmin = true;
           }
@@ -46,6 +54,7 @@ const initialzePassport = () => {
             age,
             password: createHash(password),
             rolAdmin,
+            rolPremium,
           };
 
           const result = await userModel.create(newUser);
@@ -79,7 +88,9 @@ const initialzePassport = () => {
           } else {
             let cart = await cartManager.getCartById(userCartId);
             if (!cart) {
-              const createdCart = await cartManager.createCart({ products: [] });
+              const createdCart = await cartManager.createCart({
+                products: [],
+              });
               await user.save();
               user.cart = createdCart._id;
             }
@@ -87,6 +98,31 @@ const initialzePassport = () => {
           return done(null, user);
         } catch (error) {
           return done("Error al logear:" + error);
+        }
+      }
+    )
+  );
+
+  const cookieExtractor = (req) => {
+    let token = null;
+    if (req && req.cookies) {
+      token = req.cookies["coderCookie"];
+    }
+    return token;
+  }; 
+
+  passport.use(
+    "jwt",
+    new JWTStrategy(
+      {
+        jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
+        secretOrKey: process.env.PRIVATE_KEY,
+      },
+      async (jwt_payload, done) => {
+        try {
+          return done(null, jwt_payload);
+        } catch (e) {
+          return done(e);
         }
       }
     )
