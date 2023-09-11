@@ -17,7 +17,6 @@ import { errorHandler } from "./middlewares/errors/ErrorHandler.js";
 import { addLogger } from "./services/loggers/logger.js";
 import { swaggerSpecs } from "./config/docConfig.js";
 import swaggerUi from "swagger-ui-express";
-import cookieParser from "cookie-parser";
 
 const app = express();
 const PORT = options.server.port;
@@ -40,7 +39,6 @@ app.use(
   })
 );
 initialzePassport();
-app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(errorHandler);

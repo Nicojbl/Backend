@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
   password: String,
   rolAdmin: Boolean,
   rolPremium: Boolean,
+  lastConnection: String,
   cart: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "carts",

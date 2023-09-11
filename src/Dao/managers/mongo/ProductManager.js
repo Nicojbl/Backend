@@ -13,6 +13,7 @@ class ProductManager {
       price: _product.price,
       stock: _product.stock,
       category: _product.category,
+      owner: _product.owner,
     };
 
     try {

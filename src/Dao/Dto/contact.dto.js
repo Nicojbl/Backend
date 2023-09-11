@@ -6,5 +6,6 @@ export class CreateUserDto {
     this.age = user.age;
     this.rolAdmin = user.rolAdmin;
     this.rolPremium = user.rolPremium;
+    this.lastConnection = user.lastConnection;
   }
 }
