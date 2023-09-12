@@ -5,14 +5,16 @@
         <li>Email: {{this.email}}</li>
         <li>rolAdmin: {{this.rolAdmin}}</li>
         <li>rolPremium: {{this.rolPremium}}</li>
-        <a href="/api/users/premium/{{this._id}}"><button>Cambiar rol</button></a>
+        <button class="updateRol" userId="{{this._id}}">Cambiar rol</button>
         <br>
         <br>
         <li>Last Connection: {{this.lastConnection}}</li>
       <br>
-      <button>Eliminar usuario</button>
+      <button class="deleteUser" userId="{{this._id}}">Eliminar usuario</button>
       <br>
       <br>
     {{/each}}
   </ul>
 </div>
+<script src="/js/updateRol.js"></script>
+<script src="/js/deleteUser.js"></script>

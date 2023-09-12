@@ -23,7 +23,7 @@ class UserManager {
     });
   }
 
-  async updateUserRol(uid, req, res) {
+  async updateUserRol(uid) {
     const user = await userModel.findById(uid);
 
     if (!user.rolPremium) {
@@ -32,7 +32,7 @@ class UserManager {
       user.rolPremium = false;
     }
     await user.save();
-    res.redirect("/api/users");
+    return user;
   }
 
   async delUser(uid, req, res) {
@@ -56,7 +56,6 @@ class UserManager {
         <p>Eliminamos tu cuenta de E-Bikes por inactividad, espero que vuelvas pronto!</p>
     </div>`,
       });
-      console.log("contenido", contenido);
       res.send({
         status: "success",
         menssage: "usuario eliminado",

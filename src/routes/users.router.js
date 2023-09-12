@@ -7,7 +7,7 @@ const userController = new UserController();
 const middlewares = new Middlewares();
 
 router.get("/", middlewares.adminAccess, userController.getUsers);
-router.get("/premium/:uid", middlewares.adminAccess, userController.updateUserRol)
+router.put("/premium/:uid", middlewares.adminAccess, userController.updateUserRol)
 router.delete("/:uid", middlewares.adminAccess, userController.delUser)
 
 export default router;

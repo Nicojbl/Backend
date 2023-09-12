@@ -1,8 +1,6 @@
 <div>
   <h1>Producto</h1>
   <br />
-  <a href="/api/carts/6465bf6f4ef027694d4f59d2"><button>Carrito</button></a>
-  <br />
   <div>
     <li>Title: {{prod.title}}</li>
     <li>Description: {{prod.description}}</li>
@@ -11,5 +9,7 @@
   </div>
   <br />
   <br />
-  <button>Agregar al carrito</button>
+  <a href="/api/products"><button>Volver</button></a>
+  <button id="addProductToCart" cartId="{{user}}" prodId="{{prod._id}}">Agregar producto al carrito</button>
 </div>
+<script src="/js/addProductToCart.js"></script>

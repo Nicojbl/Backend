@@ -4,5 +4,6 @@
     <li>Quantity: {{this.quantity}}</li>
     <br />
   {{/each}}
-  <button href="/api/carts/6465bf6f4ef027694d4f59d2/purchase">Finalizar compra</button>
+  <a href="/api/products"><button>Seguir comprando</button></a>
+  <a href="/api/carts/{{cart._id}}/purchase"><button>Finalizar compra</button></a>
 </ul>

@@ -1,5 +1,5 @@
 import ProductManager from "../Dao/managers/mongo/ProductManager.js";
-// import ProductManager from "../Dao/managers/file/ProductManager.js";
+import userModel from "../Dao/Models/user.model.js";
 import { generateProducts } from "../utils.js";
 
 const productManager = new ProductManager();
@@ -13,16 +13,18 @@ class ProductController {
     res.send(result);
   }
   async getProducts(req, res) {
-    const result = await productManager.getProducts()
-    
-    res.send(result)
+    const result = await productManager.getProducts();
+
+    res.send(result);
   }
   async getProductById(req, res) {
     const pid = req.params.pid;
 
     const prod = await productManager.getProductByID(pid, req);
+    const userId = prod.owner;
+    const user = await userModel.findById(userId);
 
-    res.render("prod", { prod });
+    res.render("prod", { prod, user: user.cart });
   }
   async renderProducts(req, res) {
     await productManager.renderProducts(req, res);
@@ -37,14 +39,14 @@ class ProductController {
   async deleteProducts(req, res) {
     const id = req.params.pid;
 
-    const result = await productManager.deleteProduct(id);
+    const result = await productManager.deleteProduct(id, res);
 
     res.send(result);
   }
   mockingProducts(req, res) {
     const products = generateProducts();
 
-    res.json({products});
+    res.json({ products });
   }
 }
 

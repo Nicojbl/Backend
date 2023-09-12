@@ -10,7 +10,7 @@ class UserController {
   async updateUserRol(req, res) {
     const uid = req.params.uid;
 
-    const user = await userManager.updateUserRol(uid, req, res);
+    const user = await userManager.updateUserRol(uid);
     res.send(user);
   }
 

@@ -1,7 +1,9 @@
 import productModel from "../../Models/products.model.js";
+import userModel from "../../Models/user.model.js";
 import { CustomError } from "../../../services/errors/customError.js";
 import { EError } from "../../../services/errors/enums.js";
 import { DirectoryErrors } from "../../../services/errors/info.js";
+import { transporter } from "../../../config/gmail.js"
 
 const directoryErrors = new DirectoryErrors();
 
@@ -128,18 +130,40 @@ class ProductManager {
     }
   }
 
-  async deleteProduct(pid) {
-    const product = await productModel.deleteOne({ _id: pid });
-
-    if (!product) {
+  async deleteProduct(pid, res) {
+    const prod = await productModel.findById(pid)
+    const deleteProd = await productModel.deleteOne({ _id: pid });
+    if (!deleteProd) {
       return {
         code: 400,
         status: "Error",
         message: "No se ha encontrado un product con ese ID",
       };
     }
-
-    return product;
+    const userId = prod.owner;
+    const user = await userModel.findById(userId);
+    if (user.rolPremium) {
+      try {
+        await transporter.sendMail({
+          from: "ecommerce E-Bikes",
+          to: "bassonicolasnjbl@gmail.com",
+          subject: "Producto eliminado con exito",
+          html: `<div>
+          <h1>Hola biker!</h1>
+          <p>Eliminamos un producto que has agregado anteriormente</p>
+      </div>`,
+        });
+        res.send({
+          status: "success",
+          menssage: "Producto de usuario premium eliminado",
+        });
+      } catch (e) {
+        res.send({
+          status: "Error",
+          menssage: "no se pudo eliminar el producto de usuario premium",
+        });
+      }
+    }
   }
 }
 

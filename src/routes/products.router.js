@@ -8,10 +8,10 @@ const middlewares = new Middlewares();
 
 router.get("/mockingproducts", middlewares.adminAccess, middlewares.privateAccess, productController.mockingProducts)
 router.get("/", middlewares.privateAccess, productController.renderProducts);
-router.post("/", middlewares.premiumAccess, productController.addProduct);
+router.post("/", productController.addProduct);
 router.get("/getAll", middlewares.adminAccess, productController.getProducts);
 router.get("/:pid", productController.getProductById);
 router.put("/:pid", middlewares.adminAccess, productController.updateProducts);
-router.delete("/:pid", middlewares.adminAccess, productController.deleteProducts);
+router.delete("/:pid", productController.deleteProducts);
 
 export default router;
