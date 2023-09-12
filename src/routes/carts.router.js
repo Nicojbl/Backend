@@ -7,13 +7,13 @@ const cartController = new CartController()
 const middlewares = new Middlewares()
 
 router.post("/", cartController.createCart);
-router.get("/", cartController.getCarts);
-router.get("/:cid", cartController.getCartById);
-router.get("/:cid/purchase", cartController.finishBuy)
-router.post("/:cid/product/:pid", cartController.addProductToCart);
-router.delete("/:cid/product/:pid", cartController.deteleCartProd);
-router.delete("/:cid", cartController.deleteCartProducts);
-router.put("/:cid", cartController.updateCartProd);
-router.put("/:cid/product/:pid", cartController.updateCartQuantity);
+router.get("/", middlewares.adminAccess, cartController.getCarts);
+router.get("/:cid", middlewares.privateAccess, cartController.getCartById);
+router.get("/:cid/purchase", middlewares.privateAccess, middlewares.adminAccessNone, cartController.finishBuy)
+router.post("/:cid/product/:pid", middlewares.privateAccess, cartController.addProductToCart);
+router.delete("/:cid/product/:pid", middlewares.privateAccess, cartController.deteleCartProd);
+router.delete("/:cid", middlewares.privateAccess, cartController.deleteCartProducts);
+router.put("/:cid", middlewares.privateAccess, cartController.updateCartProd);
+router.put("/:cid/product/:pid", middlewares.privateAccess, cartController.updateCartQuantity);
 
 export default router;

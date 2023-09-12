@@ -17,7 +17,17 @@ class Middlewares {
     next();
   }
 
-  async premiumAccess(req, res, next) {
+  async adminAccessNone(req, res, next) {
+    if (req.session.user.rolAdmin) {
+      return res.send({
+        status: 403,
+        message: "no autorizado!",
+      });
+    }
+    next();
+  }
+
+  async premiumAdminAccess(req, res, next) {
     if (!(req.session.user.rolAdmin && req.session.user.rolPremium)) {
       return res.send({
         status: 403,

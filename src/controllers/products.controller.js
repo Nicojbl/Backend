@@ -21,10 +21,9 @@ class ProductController {
     const pid = req.params.pid;
 
     const prod = await productManager.getProductByID(pid, req);
-    const userId = prod.owner;
-    const user = await userModel.findById(userId);
+    const cartId = req.session.user.cart
 
-    res.render("prod", { prod, user: user.cart });
+    res.render("prod", { prod, cartId });
   }
   async renderProducts(req, res) {
     await productManager.renderProducts(req, res);

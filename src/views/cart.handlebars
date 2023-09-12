@@ -3,7 +3,13 @@
     <li>Product: {{this.product.title}}</li>
     <li>Quantity: {{this.quantity}}</li>
     <br />
+    <button class="deleteCartProd" cartId="{{../cart._id}}" prodId="{{this.product._id}}">Eliminar
+      producto del carrito</button>
+    <br />
+    <br>
   {{/each}}
+  <br>
   <a href="/api/products"><button>Seguir comprando</button></a>
   <a href="/api/carts/{{cart._id}}/purchase"><button>Finalizar compra</button></a>
 </ul>
+<script src="/js/deleteCartProd.js"></script>

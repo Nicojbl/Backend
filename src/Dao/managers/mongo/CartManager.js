@@ -35,10 +35,20 @@ class CartManager {
     return cart;
   }
   
-  async addProductToCart(cartId, prodId) {
+  async addProductToCart(cartId, prodId, req) {
     // Buscar el producto y el carrito en la base de datos
     const product = await productModel.findById(prodId);
     const cart = await cartModel.findById(cartId);
+    const userId = req.session.user._id
+
+    if (product.owner === userId) {
+      return {
+        code: 400,
+        status: "Error",
+        message: "El dueño del producto no puede comprarselo!",
+      };
+    }
+
     // Verificar si el producto y el carrito existen
     if (!product || !cart) {
       return {

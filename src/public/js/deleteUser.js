@@ -1,7 +1,7 @@
-document.querySelectorAll(".deleteUser").forEach((rol) => {
-    rol.addEventListener("click", (event) => {
+document.querySelectorAll(".deleteUser").forEach((del) => {
+    del.addEventListener("click", (event) => {
       event.preventDefault();
-      const userId = rol.getAttribute("userId");
+      const userId = del.getAttribute("userId");
       fetch(`/api/users/${userId}`, {
         method: "DELETE",
         headers: {
@@ -10,10 +10,10 @@ document.querySelectorAll(".deleteUser").forEach((rol) => {
       })
         .then((response) => {
           if (response.ok) {
-            console.log("Rol de usuario cambiado");
+            console.log("usuario eliminado");
             window.location.replace("/api/users");
           } else {
-            console.log("No se pudo cambiar el rol del usuario");
+            console.log("No se pudo eliminar el user");
           }
         })
         .catch((error) => {

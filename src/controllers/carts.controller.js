@@ -25,7 +25,7 @@ class CartController {
     const cid = req.params.cid;
     const pid = req.params.pid;
 
-    const result = await cartManager.addProductToCart(cid, pid);
+    const result = await cartManager.addProductToCart(cid, pid, req);
 
     res.send(result);
   }
