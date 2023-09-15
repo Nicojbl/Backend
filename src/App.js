@@ -18,7 +18,7 @@ import { swaggerSpecs } from "./config/docConfig.js";
 import swaggerUi from "swagger-ui-express";
 
 const app = express();
-const PORT = options.server.port;
+const PORT = options.server.port || 8080;
 const mongo = options.mongo.url;
 await mongoose.connect(mongo);
 
