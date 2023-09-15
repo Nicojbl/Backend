@@ -4,7 +4,6 @@ import products from "./routes/products.router.js";
 import sessionRouter from "./routes/session.router.js";
 import userRouter from "./routes/users.router.js";
 import viewRouter from "./routes/view.router.js";
-import errors from "./services/loggers/EndpointTest.js";
 import __dirname from "./utils.js";
 import Handlebars from "express-handlebars";
 import mongoose from "mongoose";
@@ -54,7 +53,6 @@ app.use("/api/products", products);
 app.use("/api/carts", carts);
 app.use("/api/sessions", sessionRouter);
 app.use("/api/users", userRouter);
-app.use("/api/errors", errors);
 app.use("/", viewRouter);
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 

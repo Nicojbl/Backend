@@ -14,7 +14,6 @@ export const validatePassword = (password, user) =>
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// faker-js
 const customFaker = new Faker({
   locale: [en],
 });

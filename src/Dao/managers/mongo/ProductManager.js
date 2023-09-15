@@ -45,7 +45,6 @@ class ProductManager {
     let products;
 
     if (limit === 10 && page === 1 && sort === "" && query === "") {
-      // Renderizar la página sin parámetros de consulta
       products = await productModel.find().lean();
       res.render("products", {
         products,
@@ -60,7 +59,6 @@ class ProductManager {
       products = docs;
 
       if (page > totalPages || totalPages <= 0 || isNaN(page)) {
-        // Retornar un mensaje de error si se proporciona un número de página inexistente
         return res.status(400).send("Número de página no válido");
       }
 
@@ -115,10 +113,8 @@ class ProductManager {
         return { success: false, message: "Producto no encontrado" };
       }
 
-      // Actualizar el stock del producto con el nuevo valor
       product.stock = newStock;
 
-      // Guardar los cambios en la base de datos
       await product.save();
 
       return product;

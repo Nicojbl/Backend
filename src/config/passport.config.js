@@ -30,7 +30,6 @@ const initialzePassport = () => {
               message: "Error creando el usuario",
               errorCode: EError.INVALID_TYPES_ERROR,
             });
-            // tuve que poner esto por que me llevaba al login cuando habia un error y no se como arreglarlo
             window.location.replace("/register");
           }
           const user = await userModel.findOne({ email: username });
