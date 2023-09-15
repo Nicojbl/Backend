@@ -1,6 +1,6 @@
 import productModel from "../../Models/products.model.js";
 import userModel from "../../Models/user.model.js";
-import { CustomError } from "../../../services/errors/customError.js";
+import { CustomError } from "../../../services/errors/CustomError.js";
 import { EError } from "../../../services/errors/enums.js";
 import { DirectoryErrors } from "../../../services/errors/info.js";
 import { transporter } from "../../../config/gmail.js"
